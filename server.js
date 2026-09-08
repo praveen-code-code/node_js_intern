@@ -6,9 +6,11 @@ const app = express();
 
 app.use(express.json());
 
-mongoose.connect(")
+mongoose.connect("mongodb+srv://loginsa80_db_user:JahDfkUyWSRqIjTs@cluster0.oo49k08.mongodb.net/" )
     .then(() => console.log("Database connected"))
     .catch((err) => console.log(err.message));
+
+
 
 app.post('/send', async (req, res) => {
 
@@ -50,6 +52,37 @@ app.get('/getData/:id', async (req, res) => {
             });
         }
         return res.status(200).json(user);
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
+
+
+app.put('/update/:id', async (req, res) => {
+    try {
+        const { username, email, Password } = req.body;
+        const user = await userData.findByIdAndUpdate(
+            req.params.id,
+            {
+                username,
+                email,
+                Password
+            },
+            {
+                new: true
+            }
+        );
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+        return res.status(200).json({
+            message: "User updated successfully",
+            userdata: user
+        });
+
     } catch (err) {
         console.log(err.message);
     }
