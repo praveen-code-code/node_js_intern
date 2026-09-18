@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const UserData = mongoose.Schema({
-
       username :{
         type : String,
         required : true
       },
       email:{
         type:String,
-        required:true
+        required:true,
+        unique:true
       },
-      Password :{
+      password :{
         type:String,
         required:true
       },
@@ -17,7 +17,5 @@ const UserData = mongoose.Schema({
         type:Date,
         default: Date.now
       }
-
 })
-
 module.exports = mongoose.model("userdata", UserData)
