@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const userData = require('./model');
 const bcrypt = require('bcrypt');
 
-const app = express();
+const app = express("mongodb+srv://loginsa80_db_user:JahDfkUyWSRqIjTs@cluster0.oo49k08.mongodb.net/");
 
 app.use(express.json());
 
@@ -30,6 +30,30 @@ app.post("/signup", async (req,res)=>{
         console.log(err.message)
     }
 })
+
+
+
+app.post("/login", async (req,res)=>{
+    const {email,password}= req.body;
+    try{
+        const found_user = await userData.findOne({email})
+        if(!found_user){
+            return res.json({message:"invaild login Data"});
+        }
+        const ismatch = await bcrypt.compare(password,found_user.password);
+        if(!ismatch){
+            return res.json({error:"invalid password"})
+        }
+        return res.json({message:"user login",
+            username:found_user.username
+        })
+    }
+    catch(err){
+        console.log(err.message)
+    }
+})
+
+
 
 
 
